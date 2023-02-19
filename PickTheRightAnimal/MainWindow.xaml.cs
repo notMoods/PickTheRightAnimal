@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PickTheRightAnimal
 {
@@ -20,14 +21,33 @@ namespace PickTheRightAnimal
     /// </summary>
     public partial class MainWindow : Window
     {
+        DispatcherTimer timer = new DispatcherTimer();
+        int tenthsOfSecondsElapsed;
+        int timerDur = 100;
+
         static int[] highScore = { 0, 0, 0 };
         static string[] txt = { "Easy", "Normal", "Hard" };
         public MainWindow()
         {
             InitializeComponent();
-            
+            timer.Interval = TimeSpan.FromSeconds(.1);
+            timer.Tick += Timer_Tick;
+
         }
 
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            tenthsOfSecondsElapsed++;
+            float h = (float)timerDur - (tenthsOfSecondsElapsed / 10F);
+            timerTextBlock.Text = h.ToString("0.0s");
+
+            if (h == 0)
+            {
+                timer.Stop();
+                GameOver(diff);
+            }
+        }
 
         int lives;
         int points;
@@ -52,11 +72,13 @@ namespace PickTheRightAnimal
             normalButton.Visibility = Visibility.Hidden;
             hardButton.Visibility = Visibility.Hidden;
 
+            
+            
 
             lives = 3;
             points = 0;
 
-            TempSetUp();
+            TempSetUp(y);
             
         }
 
@@ -81,12 +103,14 @@ namespace PickTheRightAnimal
             }
             else
             {
-                TempSetUp();
+                timer.Stop();
+                TempSetUp(timerDur);
             }
         }
 
-        private void TempSetUp()
+        private void TempSetUp(int g)
         {
+            timerDur = g;
             List<string> emojis = new List<string>()
             {
                 "🐒", "🐲", "🦛", "🐍",
@@ -99,6 +123,9 @@ namespace PickTheRightAnimal
             matchTextBlock.Text = emojis[random.Next(emojis.Count)];
             livesTextBlock.Text = $"{lives} ❤️";
             scoreTextBlock.Text = $"{points} pts.";
+
+            tenthsOfSecondsElapsed = 0;
+            timer.Start();
 
             foreach (TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
             {
@@ -160,15 +187,15 @@ namespace PickTheRightAnimal
             {
                 case "easyButton":
                     diff = 0;
-                    SetUp(8);
+                    SetUp(5);
                     break;
                 case "normalButton":
                     diff = 1;
-                    SetUp(5); 
+                    SetUp(3); 
                     break;
                 case "hardButton":
                     diff = 2;
-                    SetUp(3);
+                    SetUp(1);
                     break;
             }
         }
