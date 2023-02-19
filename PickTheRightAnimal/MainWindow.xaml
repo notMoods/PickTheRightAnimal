@@ -48,7 +48,7 @@
 
         <TextBlock x:Name="gameOverTextBlock" Grid.Column="1" HorizontalAlignment="Left" Margin="19,0,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Game Over !" VerticalAlignment="Top" FontSize="36" Grid.ColumnSpan="2" Width="212" Visibility="Collapsed"/>
         <TextBlock x:Name="finalScoreTextBlock" HorizontalAlignment="Left" Margin="102,75,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" Text="Score:" Grid.RowSpan="2" Grid.ColumnSpan="2" Visibility="Collapsed"/>
-        <Button x:Name="retryButton" Grid.Column="1" Content="Try Again?" HorizontalAlignment="Left" Margin="68,71,0,0" Grid.Row="3" VerticalAlignment="Top" FontSize="18" Grid.ColumnSpan="2" MouseDown="retryButton_MouseDown" FontStyle="Italic" Grid.RowSpan="2" Visibility="Collapsed"/>
+        <Button x:Name="retryButton" Grid.Column="1" Content="Try Again?" HorizontalAlignment="Left" Margin="68,71,0,0" Grid.Row="3" VerticalAlignment="Top" FontSize="18" Grid.ColumnSpan="2" FontStyle="Italic" Grid.RowSpan="2" Visibility="Collapsed" Click="retryButton_Click"/>
         <TextBlock x:Name="highScoreTextBlock" Grid.Column="2" HorizontalAlignment="Left" Margin="10,75,0,0" Grid.Row="2" TextWrapping="Wrap" Text="High Score: " VerticalAlignment="Top" FontSize="22" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="171" Visibility="Collapsed"/>
     </Grid>
 

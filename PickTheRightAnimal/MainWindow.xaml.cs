@@ -20,40 +20,38 @@ namespace PickTheRightAnimal
     /// </summary>
     public partial class MainWindow : Window
     {
-        int highScore = 0;
+        static int highScore = 0;
         public MainWindow()
         {
             InitializeComponent();
             SetUp();
         }
-        int lives = 3;
+        int lives;
+        int points;
         private void SetUp()
         {
-            //throw new NotImplementedException();
-            List<string> emojis = new List<string>()
+            foreach (TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
             {
-                "🐒", "🐲", "🦛", "🐍",
-                "🐬", "🦈", "🐳", "🕊",
-                "🐧", "🦩", "🐣", "🐘",
-                "🐁", "🦘", "🦥", "🐔"
-            };
-
-            Random random = new Random();
-            matchTextBlock.Text = emojis[random.Next(emojis.Count)];
-            livesTextBlock.Text = $"{lives} ❤️";
-
-            foreach(TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
-            {
-                if (textBlock.Name == "")
+                if (textBlock.Name != "gameOverTextBlock" || textBlock.Name != "finalScoreTextBlock")
                 {
-                    int index = random.Next(emojis.Count);
-                    textBlock.Text = emojis[index];
-                    emojis.RemoveAt(index);
+                    textBlock.Visibility = Visibility.Visible;
                 }
             }
+
+            finalScoreTextBlock.Visibility = Visibility.Hidden;
+            gameOverTextBlock.Visibility = Visibility.Hidden;
+            retryButton.Visibility = Visibility.Hidden;
+            highScoreTextBlock.Visibility = Visibility.Hidden;
+
+
+            lives = 3;
+            points = 0;
+
+            TempSetUp();
+            
         }
 
-        int points = 0;
+        
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock clicka = sender as TextBlock;
@@ -74,7 +72,33 @@ namespace PickTheRightAnimal
             }
             else
             {
-                SetUp();
+                TempSetUp();
+            }
+        }
+
+        private void TempSetUp()
+        {
+            List<string> emojis = new List<string>()
+            {
+                "🐒", "🐲", "🦛", "🐍",
+                "🐬", "🦈", "🐳", "🕊",
+                "🐧", "🦩", "🐣", "🐘",
+                "🐁", "🦘", "🦥", "🐔"
+            };
+
+            Random random = new Random();
+            matchTextBlock.Text = emojis[random.Next(emojis.Count)];
+            livesTextBlock.Text = $"{lives} ❤️";
+            scoreTextBlock.Text = $"{points} pts.";
+
+            foreach (TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
+            {
+                if (textBlock.Name == "")
+                {
+                    int index = random.Next(emojis.Count);
+                    textBlock.Text = emojis[index];
+                    emojis.RemoveAt(index);
+                }
             }
         }
 
@@ -99,10 +123,10 @@ namespace PickTheRightAnimal
             highScoreTextBlock.Visibility = Visibility.Visible;
         }
 
-        private void retryButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            
 
+        private void retryButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetUp();
         }
     }
 }
