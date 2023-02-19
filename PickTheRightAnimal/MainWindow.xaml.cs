@@ -20,15 +20,20 @@ namespace PickTheRightAnimal
     /// </summary>
     public partial class MainWindow : Window
     {
-        static int highScore = 0;
+        static int[] highScore = { 0, 0, 0 };
+        static string[] txt = { "Easy", "Normal", "Hard" };
         public MainWindow()
         {
             InitializeComponent();
-            SetUp();
+            
         }
+
+
         int lives;
         int points;
-        private void SetUp()
+
+        int diff = -1;
+        private void SetUp(int y)
         {
             foreach (TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
             {
@@ -42,6 +47,10 @@ namespace PickTheRightAnimal
             gameOverTextBlock.Visibility = Visibility.Hidden;
             retryButton.Visibility = Visibility.Hidden;
             highScoreTextBlock.Visibility = Visibility.Hidden;
+
+            easyButton.Visibility = Visibility.Hidden;
+            normalButton.Visibility = Visibility.Hidden;
+            hardButton.Visibility = Visibility.Hidden;
 
 
             lives = 3;
@@ -68,7 +77,7 @@ namespace PickTheRightAnimal
 
             if (lives == 0)
             {
-                GameOver();
+                GameOver(diff);
             }
             else
             {
@@ -102,11 +111,12 @@ namespace PickTheRightAnimal
             }
         }
 
-        private void GameOver()
+        private void GameOver(int h)
         {
-            highScore = Math.Max(highScore, points);
+
+            highScore[h] = Math.Max(highScore[h], points);
             finalScoreTextBlock.Text = $"Score: {points}";
-            highScoreTextBlock.Text = $"High Score: {highScore}";
+            highScoreTextBlock.Text = $"High Score ({txt[h]}): {highScore[h]}";
            
 
             foreach (TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
@@ -126,7 +136,43 @@ namespace PickTheRightAnimal
 
         private void retryButton_Click(object sender, RoutedEventArgs e)
         {
-            SetUp();
+            restarter();
         }
+
+        private void restarter()
+        {
+            //throw new NotImplementedException();
+            finalScoreTextBlock.Visibility = Visibility.Hidden;
+            gameOverTextBlock.Visibility = Visibility.Hidden;
+            retryButton.Visibility = Visibility.Hidden;
+            highScoreTextBlock.Visibility = Visibility.Hidden;
+
+            easyButton.Visibility = Visibility.Visible;
+            normalButton.Visibility = Visibility.Visible;
+            hardButton.Visibility = Visibility.Visible;
+        }
+
+        private void diffButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button h = sender as Button;
+
+            switch (h.Name)
+            {
+                case "easyButton":
+                    diff = 0;
+                    SetUp(8);
+                    break;
+                case "normalButton":
+                    diff = 1;
+                    SetUp(5); 
+                    break;
+                case "hardButton":
+                    diff = 2;
+                    SetUp(3);
+                    break;
+            }
+        }
+
+
     }
 }
