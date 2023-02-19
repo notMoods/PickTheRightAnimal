@@ -20,6 +20,7 @@ namespace PickTheRightAnimal
     /// </summary>
     public partial class MainWindow : Window
     {
+        int highScore = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -79,7 +80,10 @@ namespace PickTheRightAnimal
 
         private void GameOver()
         {
+            highScore = Math.Max(highScore, points);
             finalScoreTextBlock.Text = $"Score: {points}";
+            highScoreTextBlock.Text = $"High Score: {highScore}";
+           
 
             foreach (TextBlock textBlock in zaGrid.Children.OfType<TextBlock>())
             {
@@ -87,10 +91,18 @@ namespace PickTheRightAnimal
                 {
                     textBlock.Visibility = Visibility.Hidden;
                 }
-                
-                finalScoreTextBlock.Visibility = Visibility.Visible;
-                gameOverTextBlock.Visibility = Visibility.Visible;
             }
+
+            finalScoreTextBlock.Visibility = Visibility.Visible;
+            gameOverTextBlock.Visibility = Visibility.Visible;
+            retryButton.Visibility = Visibility.Visible;
+            highScoreTextBlock.Visibility = Visibility.Visible;
+        }
+
+        private void retryButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+
         }
     }
 }
